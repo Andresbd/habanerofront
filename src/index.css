@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#root {
+  height: 100vh;
+  overflow: auto;
+}
+
+.fullWidth {
+  width: 100vh;
+}
+
+.centerVertical {
+  margin-top: 45vh;
+}
+
+.centerHorizontal {
+  margin-left: 45vh;
+}
+
+.textCenter {
+  text-align: center;
+}
