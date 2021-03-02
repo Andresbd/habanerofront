@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import moment from "moment";
 import {Button, Container, Grid, makeStyles, MenuItem, Select, TextField, Typography} from "@material-ui/core";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -6,6 +6,7 @@ import {DatePicker} from '@material-ui/pickers';
 import {habaneroColors} from "../classes/colorClasses";
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {postNewWorker} from "../utils";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -31,6 +32,11 @@ export const FormWorker = () => {
     const [workerLastName, setWorkerLasyName] = useState("");
     const [workerSecondLastName, setWorkerSecondLastName] = useState("");
     const [workerType, setWorkerType] = useState("");
+    const [isDisabled, setIsDisabled] = useState(true);
+
+    useEffect(() => {
+        setIsDisabled(!(workerName !== '' && workerLastName !== '' && workerSecondLastName !== '' && workerType !== ''))
+    }, [workerName, workerLastName, workerSecondLastName, workerType])
 
     const handleDateChange = (date) => {
         setRegisterDate(date)
@@ -52,6 +58,7 @@ export const FormWorker = () => {
     }
 
     const submitForm = (event) => {
+
         const data = {
             hireDate: registerDate.format(),
             name: workerName,
@@ -59,7 +66,13 @@ export const FormWorker = () => {
             secondLastName: workerSecondLastName,
             rol: workerType
         }
-        console.log(data)
+        const createWorker = postNewWorker(data);
+
+        createWorker.then((res) => {
+            console.log('Creation successfully')
+        }).catch((error) => {
+            console.log('Error in creation', error)
+        })
         event.preventDefault()
     }
 
@@ -70,30 +83,26 @@ export const FormWorker = () => {
             </Button>
             <form onSubmit={submitForm} className={classes.container} autoComplete={"off"} noValidate>
                 <Grid container direction={"column"} spacing={4}>
-                   <Grid item xs={12}>
+                   <Grid item xs>
                        <Typography variant={"h5"}>
-                           Datos del cortador
+                           Datos del trabajador
                        </Typography>
                    </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs>
                         <DatePicker
                             label="Fecha de contratación"
                             value={registerDate}
                             onChange={handleDateChange}
                             animateYearScrolling
+                            disableFuture={true}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs>
                         <TextField error={minLengthError(workerName)} id="standard-basic" label="Nombre" value={workerName} onChange={handleNameChange} />
-                        <TextField id="standard-basic" label="Apellido Paterno" value={workerLastName} onChange={handleLastNameChange} />
-                        <TextField id="standard-basic" label="Apellido Materno" value={workerSecondLastName} onChange={handleSecondLastNameChange} />
+                        <TextField error={minLengthError(workerName)} id="standard-basic" label="Apellido Paterno" value={workerLastName} onChange={handleLastNameChange} />
+                        <TextField error={minLengthError(workerName)} id="standard-basic" label="Apellido Materno" value={workerSecondLastName} onChange={handleSecondLastNameChange} />
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button type="submit" classes={{root: color.root}}>
-                            Registrar
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs>
                         <Select
                             style={{
                                 minWidth: 120
@@ -108,6 +117,11 @@ export const FormWorker = () => {
                                 ))
                             }
                         </Select>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button disabled={isDisabled} type="submit" classes={{root: color.root}}>
+                            Registrar
+                        </Button>
                     </Grid>
                 </Grid>
             </form>

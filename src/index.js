@@ -12,7 +12,7 @@ import store from './store';
 ReactDOM.render(
   <Provider store={store}>
       <Router>
-          <MuiPickersUtilsProvider utils={MomentUtils}>
+          <MuiPickersUtilsProvider locale={"esLocale"} utils={MomentUtils}>
               <App />
           </MuiPickersUtilsProvider>
       </Router>

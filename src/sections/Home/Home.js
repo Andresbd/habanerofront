@@ -9,18 +9,18 @@ export const Home = () => {
         <Container maxWidth={"sm"} className={"fullWidth centerVertical"}>
             <Grid container spacing={6}>
                 <Grid item xs style={{textAlign: "center"}}>
-                    <Button variant="contained" classes={{root: color.root}} size={"large"}>
+                    <Button component={Link} to="/Cut" variant="contained" classes={{root: color.root}} size={"large"}>
                         Registro de corte
                     </Button>
                 </Grid>
                 <Grid item xs style={{textAlign: "center"}}>
-                    <Button variant="contained" classes={{root: color.root}} size={"large"}>
+                    <Button component={Link} to="/Sell" variant="contained" classes={{root: color.root}} size={"large"}>
                         Registro de venta
                     </Button>
                 </Grid>
                 <Grid item xs={12} style={{textAlign: "center"}}>
                     <Button component={Link} to="/Worker" variant="contained" classes={{root: color.root}} size={"large"}>
-                        Registro de cortador
+                        Registro de trabajador
                     </Button>
                 </Grid>
             </Grid>
